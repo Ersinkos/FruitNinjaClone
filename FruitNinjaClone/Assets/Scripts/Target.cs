@@ -33,15 +33,15 @@ public class Target : MonoBehaviour
     {
 
     }
-    private void OnMouseDown()
-    {
-        if (gameManager.isGameActive)
-        {
-            Destroy(gameObject);
-            Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
-            gameManager.UpdateScore(pointValue);
-        }
-    }
+    //private void OnMouseDown()
+    //{
+    //    if (gameManager.isGameActive)
+    //    {
+    //        Destroy(gameObject);
+    //        Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
+    //        gameManager.UpdateScore(pointValue);
+    //    }
+    //}
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Sensor"))
@@ -50,9 +50,25 @@ public class Target : MonoBehaviour
         }
         if (other.CompareTag("Sensor") && !gameObject.CompareTag("Bad"))
         {
-            gameManager.GameOver();
+            if (gameManager.lives == 0)
+            {
+                gameManager.GameOver();
+            }
+            else
+            {
+                gameManager.ObjectReachedToSensor();
+            }
         }
-
+    }
+    public void DestroyTarget()
+    {
+        if (gameManager.isGameActive)
+        {
+            Destroy(gameObject);
+            Instantiate(explosionParticle, transform.position,
+            explosionParticle.transform.rotation);
+            gameManager.UpdateScore(pointValue);
+        }
     }
     Vector3 RandomForce()
     {

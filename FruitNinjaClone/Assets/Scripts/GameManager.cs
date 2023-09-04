@@ -12,8 +12,12 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
+    public TextMeshProUGUI livesText;
     public Button restartButton;
+    public AudioSource backgroundMusic;
+    public Slider volumeSlider;
 
+    public int lives = 3;
     public int score;
     private float spawnRate = 1.0f;
     public bool isGameActive;
@@ -39,10 +43,23 @@ public class GameManager : MonoBehaviour
             Instantiate(targets[index]);
         }
     }
+    public void ObjectReachedToSensor()
+    {
+        lives--;
+        DisplayLives();
+    }
+    public void DisplayLives()
+    {
+        livesText.text = "Lives:" + lives;
+    }
     public void UpdateScore(int scoreToAdd)
     {
         score += scoreToAdd;
         scoreText.text = "Score: " + score;
+    }
+    public void ChangeBackgroundMusicVolume()
+    {
+        backgroundMusic.volume = volumeSlider.value;
     }
     public void GameOver()
     {
@@ -62,6 +79,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnTarget());
         score = 0;
         UpdateScore(0);
+        DisplayLives();
         titleScreen.gameObject.SetActive(false);
     }
 }
